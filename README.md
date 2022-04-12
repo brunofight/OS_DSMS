@@ -13,7 +13,7 @@
 See: https://www.galiglobal.com/blog/2021/20210130-Flink-setup.html
 
 ```
-mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-java -DarchetypeVersion=1.12.0 -DgroupId=<group> -DartifactId=<artifact> -Dversion=0.1 -Dpackage=galiglobal.flink -DinteractiveMode=false
+mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-java -DarchetypeVersion=1.12.0 -DgroupId=org.apache.flink -DartifactId=flink-quickstart-java -Dversion=0.1 -Dpackage=demo.rollingSum -DinteractiveMode=false
 ```
 
 Open Project with IntelliJ (New --> Project from Existing Sources --> Maven)

@@ -10,7 +10,7 @@ Begleitend zum 2. Vortrag im Oberseminar *Data Stream Management Systeme* (02.05
 
 ## Nutzung
 
-```
+```git
 git clone https://github.com/brunofight/OS_DSMS.git
 ```
 
@@ -49,7 +49,7 @@ Im Buch *Stream Processing with Apache Flink* - Kapitel 4 (S. 71 ff) ist ebenfal
 
 Als Einstiegspunkt für die Entwicklung einer neuen Flink-Anwendung eignet sich der Maven-Archetype Flink-Quickstart-Java:
 
-```
+```bash
 mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-java -DarchetypeVersion=1.12.0 -DgroupId=org.apache.flink -DartifactId=<Artifact> -Dversion=0.1 -Dpackage=<Package> -DinteractiveMode=false
 ```
 
@@ -102,7 +102,7 @@ Im Hintergrund wird Log4J zum Logging verwendet. Das kann sofern keine Fehler au
 
 Dieses Beispiel soll den Unterschied zwischen *Event Time* und *Processing Time* verdeutlichen. Besonders stark wird das bei der Verarbeitung von out-of-order Events mit hohem *Event Time Skew* deutlich. Dazu werden in einer lokalen Datenquelle Event-Zeiten ohne Reihenfolge simuliert (s. [SiemSource](https://github.com/brunofight/OS_DSMS/blob/main/src/main/java/demo/windowing/SiemSource.java)):
 
-```
+```java
 long[][] outOfOrderEventTimes = { {534, 2}, {332, 2}, {965, 2}, {1345, 2}, {1234, 2}, {876, 2}, {954, 2},
             {1111, 2}, {1876, 2}, {667, 2}, {3223, 2}, {3110, 2}, {3230, 2}, {78, 2}};
 ```
@@ -111,7 +111,7 @@ Das zweidimensionale Array stellt eine Menge von Tupeln aus Event-Zeiten und ein
 
 In der *run*-Methode wird die Übertragungsverzögerung der Events vorgetäuscht. Die Prozesszeit für das erste Event liegt bei 3 Sekunden. Alle folgenden Events haben konstant eine weitere Prozesszeit-Verzögerung von 100 Millisekunden. Mit ``ctx.collectWithTimeStamp(SiemEvent event, long eventTime)`` wird das zuvor erzeugte Event an den StreamJob weitergegeben. 
 
-```
+```java
 public void run(SourceContext<SiemEvent> ctx) throws Exception {
 
     startTime = System.currentTimeMillis();
@@ -139,7 +139,7 @@ Der Startzeitpunkt des ersten Windows kann jenachdem wann dem Thread genau wiede
 
 Die Klasse [ProcessingTimeWindowing](https://github.com/brunofight/OS_DSMS/blob/main/src/main/java/demo/windowing/ProcessingTimeWindowing.java) verarbeitet den Stream mit Prozess-Zeit basierten Windows.
 
-```
+```java
 DataStream<Tuple3<Integer, Integer, String>> stream = env.addSource(new SiemSource())
                 .flatMap(new Splitter())
                 .keyBy(t -> t.f0)
@@ -150,10 +150,17 @@ DataStream<Tuple3<Integer, Integer, String>> stream = env.addSource(new SiemSour
         stream.print();
 ```
 
+> 6> (1,*16*,**534, 332, 965, 1345, 1234, 876, 954, 1111,** )
+> 6> (1,*12*,**1876, 667, 3223, 3110, 3230, 78,** )
+
 
 ### Event Time Windows
 
 
+> 6> (1,*14*,**534, 332, 965, 876, 954, 1111, 667,**)
+> 6> (1,*6*,**1345, 1234, 1876,** )
+> 6> (1,*2*,**3110,** )
+> 6> (1,*4*,**3223, 3230,** )
 
 
 

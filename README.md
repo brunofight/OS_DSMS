@@ -66,6 +66,7 @@ Normalerweise werden Streaming Jobs von einem Flink-Client auf den Flink Jobmana
 ![Project_Setup5](https://user-images.githubusercontent.com/55789698/163538909-03b7adcf-4ea6-4842-b547-1cab05f9f505.PNG)
 
 
+
 ### Basic Project Setup
 
 See: https://www.galiglobal.com/blog/2021/20210130-Flink-setup.html

@@ -43,7 +43,7 @@ Als Einstiegspunkt für die Entwicklung einer neuen Flink-Anwendung eignet sich 
 mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-java -DarchetypeVersion=1.12.0 -DgroupId=org.apache.flink -DartifactId=<Artifact> -Dversion=0.1 -Dpackage=<Package> -DinteractiveMode=false
 ```
 
-![Schritt 1](Images/Setup_Process1.PNG)
+![Images/Setup_Process1.PNG]
 
 ### Basic Project Setup
 

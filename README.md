@@ -54,6 +54,12 @@ Danach lässt sich das Projekt folgendermaßen in IntelliJ importieren
 
 ![Project_Setup2](https://user-images.githubusercontent.com/55789698/163538887-0dd853d4-193b-4eb9-bdc2-35b2ed2536ea.PNG)
 
+### Test-Projekt
+
+Normalerweise werden Streaming Jobs von einem Flink-Client auf den Flink Jobmanager hochgeladen, wo die Laufzeit-Dependencies für Flink bereits vorliegen. Deswegen wurden diese in der pom.xml als *provided* vorgegeben. Allerdings werden dadurch die Dependencies bei einem lokalen Test in der IDE so ohne weiteres auch nicht berücksichtigt. Aus diesem Grund wirft die StreamingJob-Klasse zunächst einen ``NoClassFoundError``. Zur Behebung (dieses Fehlers und einer möglicherweise auftretenden ``InaccessibleObjectException``) sind zwei zusätzliche Einstellungen in den *Run Configurations* notwendig:
+
+- Add dependencies with "provided" scope to classpath
+- Add VM Options ``--add-opens java.base/java.lang=ALL-UNNAMED``
 
 ![Project_Setup3](https://user-images.githubusercontent.com/55789698/163538902-645f34d7-9289-49ea-bfbe-3bfa360f092a.PNG)
 ![Project_Setup4](https://user-images.githubusercontent.com/55789698/163538905-3237ff7e-e0f5-4520-b852-58162d378023.PNG)
@@ -70,14 +76,7 @@ mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId
 
 Open Project with IntelliJ (New --> Project from Existing Sources --> Maven)
 
-Edit run configurations --> Modify Options: checkmark *Add VM Options*, *Add "Dependencies" with provided scope to class*
 
-VM Options
-```
---add-opens java.base/java.lang=ALL-UNNAMED
-```
-
-... this avoids InaccessibleObjectException
 
 ### Bundle for Flink Cluster in Docker
 

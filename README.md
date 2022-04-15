@@ -10,7 +10,7 @@ Begleitend zum 2. Vortrag im Oberseminar *Data Stream Management Systeme* (02.05
 
 ## Nutzung
 
-```git
+```console
 git clone https://github.com/brunofight/OS_DSMS.git
 ```
 
@@ -49,7 +49,7 @@ Im Buch *Stream Processing with Apache Flink* - Kapitel 4 (S. 71 ff) ist ebenfal
 
 Als Einstiegspunkt für die Entwicklung einer neuen Flink-Anwendung eignet sich der Maven-Archetype Flink-Quickstart-Java:
 
-```bash
+```console
 mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-java -DarchetypeVersion=1.12.0 -DgroupId=org.apache.flink -DartifactId=<Artifact> -Dversion=0.1 -Dpackage=<Package> -DinteractiveMode=false
 ```
 
@@ -155,7 +155,8 @@ stream.print();
 
 Die Ausgabe ist folgendermaßen zu interpretieren:
 - erster Wert ist nur ein Identifikator für ``keyBy`` und hat sonst keine Bedeutung
-- 
+- zweiter Wert (kursiv) ist die Summenbildung der einzelnen Element-Werte
+- Rest (fett) sind die zugeordneten Event-Zeiten
 
 Beim Ergebnis fällt auf, dass:
 - die Events in der Reihenfolge ihrer Verarbeitung zu Prozess-Zeit vorliegen
@@ -183,7 +184,18 @@ stream.print();
 > 6> (1,*2*,**3110,** )\
 > 6> (1,*4*,**3223, 3230,** )
 
+Im Vergleich zu den *Processing Time Windows*:
+- insgesamt 4 *Fixed Windows*, da die Event-Zeiten sich in einem Intervall zwischen 78 und 3230 Millisekunden befinden
+- die Events sind jetzt entsprechend ihrer Event-Zeit den Windows zugeordnet; die Summen entsprechen somit den korrekten Werten
+- das letzte Event (Event-Zeit: 78) fehlt; das liegt an der Heuristik der Watermarks 
 
+Durch Herumspielen mit dem *Duration.ofSeconds(int t)*-Parameter kann das letzte Event Wahlweise mit erfasst werden oder auch nicht.
+```java
+env..assignTimestampsAndWatermarks(WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(3)))
+```
+
+Bei niedrigen Werten z.B. 1 Sekunde fehlt das letzte Event, denn zuvor erscheinen Events mit einer Event-Zeit von über 3000 ms. Das heißt nach der Watermark-Heuristik wird nicht von einer größeren "Unordnung" als einer Sekunde ausgeganen. Zu dem Zeitpunkt (in Prozess-Zeit), wenn das Event auftritt, wurde das zugehörige erste Window wieder geschlossen; die 78 fällt weg.
+Hingegen bei einem höheren Wert von bspw. 5 Sekunden wird die 78 erfasst.
 
 ### Bundle for Flink Cluster in Docker
 

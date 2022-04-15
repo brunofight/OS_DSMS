@@ -100,7 +100,7 @@ Im Hintergrund wird Log4J zum Logging verwendet. Das kann sofern keine Fehler au
 
 ## Demo 2 - Event und Processing Time basiertes Windowing
 
-Dieses Beispiel soll den Unterschied zwischen *Event Time* und *Processing Time* verdeutlichen. Besonders stark wird das bei der Verarbeitung von out-of-order Events mit hohem *Event Time Skew* deutlich. Dazu werden in einer lokalen Datenquelle Event-Zeiten ohne Reihenfolge simuliert (s. [SiemSource.java](https://github.com/brunofight/OS_DSMS/blob/main/src/main/java/demo/windowing/SiemSource.java)):
+Dieses Beispiel soll den Unterschied zwischen *Event Time* und *Processing Time* verdeutlichen. Besonders stark wird das bei der Verarbeitung von out-of-order Events mit hohem *Event Time Skew* deutlich. Dazu werden in einer lokalen Datenquelle Event-Zeiten ohne Reihenfolge simuliert (s. [SiemSource](https://github.com/brunofight/OS_DSMS/blob/main/src/main/java/demo/windowing/SiemSource.java)):
 
 ```
 long[][] outOfOrderEventTimes = { {534, 2}, {332, 2}, {965, 2}, {1345, 2}, {1234, 2}, {876, 2}, {954, 2},
@@ -109,9 +109,7 @@ long[][] outOfOrderEventTimes = { {534, 2}, {332, 2}, {965, 2}, {1345, 2}, {1234
 
 Das zweidimensionale Array stellt eine Menge von Tupeln aus Event-Zeiten und einem Wert für eine spätere Summenberechnung (der Einfachheit halber überall 2).
 
-In der *run*-Methode wird die Übertragungsverzögerung der Events vorgetäuscht. Die Prozesszeit für das erste Event liegt bei 3 Sekunden. Alle folgenden Events haben konstant eine weitere Prozesszeit-Verzögerung von 100 Millisekunden. Mit ``ctx.collectWithTimeStamp(SiemEvent event, long eventTime)`` wird das zuvor erzeugte Event an den StreamJob weitergegeben. Dabei berechnet sich die Event-Zeit aus dem Startzeitpunkt der StreamSource plus der vorgegebenen Event-Zeit. So ergeben sich für die Elemente des Arrays folgende relative Event- und Prozesszeiten:
-
-> {534, 3000} ; {332, 3100} ; {965, 3200} ; {1345, 3300} usw.
+In der *run*-Methode wird die Übertragungsverzögerung der Events vorgetäuscht. Die Prozesszeit für das erste Event liegt bei 3 Sekunden. Alle folgenden Events haben konstant eine weitere Prozesszeit-Verzögerung von 100 Millisekunden. Mit ``ctx.collectWithTimeStamp(SiemEvent event, long eventTime)`` wird das zuvor erzeugte Event an den StreamJob weitergegeben. 
 
 ```
 public void run(SourceContext<SiemEvent> ctx) throws Exception {
@@ -128,6 +126,33 @@ public void run(SourceContext<SiemEvent> ctx) throws Exception {
     Thread.sleep(2000);
 }
 ```
+
+Dabei berechnet sich die Event-Zeit aus dem Startzeitpunkt der StreamSource plus der vorgegebenen Event-Zeit. So ergeben sich für die Elemente des Arrays folgende relative Event- und Prozesszeiten:
+
+> {534, 3000} ; {332, 3100} ; {965, 3200} ; {1345, 3300} usw.
+
+Für den Vergleich wird diese Datenquelle auf zwei StreamJobs simuliert. In beiden Beispielen werden Fixed Windows (bzw. Tumbling Windows) mit einer Zeit von 1 Sekunde verwendet. In den jeweiligen Windows wird die Summe der darin vorliegenden Werte und eine Liste der zugeordneten Event-Zeiten aggregiert.
+
+Der Startzeitpunkt des ersten Windows kann jenachdem wann dem Thread genau wieder Rechenzeit gegeben wird leicht abweichen. Dadurch ist die Zuordnung versuchsweise immer leicht zueinander verschoben. Für das Nachvollziehen der generellen Wirkungsweise von Prozess- und Event-Zeit ist das jedoch irrelevant.
+
+### Processing Time Windows
+
+Die Klasse [ProcessingTimeWindowing](https://github.com/brunofight/OS_DSMS/blob/main/src/main/java/demo/windowing/ProcessingTimeWindowing.java) verarbeitet den Stream mit Prozess-Zeit basierten Windows.
+
+```
+DataStream<Tuple3<Integer, Integer, String>> stream = env.addSource(new SiemSource())
+                .flatMap(new Splitter())
+                .keyBy(t -> t.f0)
+                .window(TumblingProcessingTimeWindows.of(Time.seconds(1)))
+                .reduce((t1,t2) -> {t1.f1 += t2.f1; t1.f2 += t2.f2; return t1;})
+                ;
+
+        stream.print();
+```
+
+
+### Event Time Windows
+
 
 
 

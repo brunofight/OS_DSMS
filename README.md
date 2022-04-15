@@ -37,7 +37,13 @@ Im Buch *Stream Processing with Apache Flink* - Kapitel 4 (S. 71 ff) ist ebenfal
 
 ## Flink Quickstart-Projekt
 
+Als Einstiegspunkt für die Entwicklung einer neuen Flink-Anwendung eignet sich der Maven-Archetype Flink-Quickstart-Java:
 
+```
+mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-java -DarchetypeVersion=1.12.0 -DgroupId=org.apache.flink -DartifactId=<Artifact> -Dversion=0.1 -Dpackage=<Package> -DinteractiveMode=false
+```
+
+![Schritt 1](Images/Setup_Process1.PNG)
 
 ### Basic Project Setup
 

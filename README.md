@@ -83,7 +83,7 @@ In der Ausgabe erscheinen nun alle Zahlen > 8.
 
 ### Logging
 
-Im Hintergrund wird Log4J zum Logging verwendet. Das kann sofern keine Fehler auftreten bei der Demonstration etwas störend sein. Um das Logging auszuschalten, muss in der Datei ``./target/classes/log4j2.properties`` die Konfiguration ``rootLogger.level = OFF`` vorgenommen werden.
+Im Hintergrund wird Log4J zum Logging verwendet. Das kann sofern keine Fehler auftreten bei der Demonstration etwas störend sein. Um das Logging auszuschalten, muss in der Datei ``./src/main/resources/log4j2.properties`` die Konfiguration ``rootLogger.level = OFF`` vorgenommen werden.
 
 ## Demo 1 - Syslog-Verarbeitung mit Apache Kafka und Flink
 

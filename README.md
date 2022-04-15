@@ -85,16 +85,10 @@ In der Ausgabe erscheinen nun alle Zahlen > 8.
 
 Im Hintergrund wird Log4J zum Logging verwendet. Das kann sofern keine Fehler auftreten bei der Demonstration etwas störend sein. Um das Logging auszuschalten, muss in der Datei ``./target/classes/log4j2.properties`` die Konfiguration ``rootLogger.level = OFF`` vorgenommen werden.
 
-### Basic Project Setup
+## Demo 1 - Syslog-Verarbeitung mit Apache Kafka und Flink
 
-See: https://www.galiglobal.com/blog/2021/20210130-Flink-setup.html
 
-```
-mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-java -DarchetypeVersion=1.12.0 -DgroupId=org.apache.flink -DartifactId=flink-quickstart-java -Dversion=0.1 -Dpackage=demo.rollingSum -DinteractiveMode=false
-```
-
-Open Project with IntelliJ (New --> Project from Existing Sources --> Maven)
-
+## Demo 2 - Event und Processing Time basiertes Windowing
 
 
 ### Bundle for Flink Cluster in Docker

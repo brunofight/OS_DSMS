@@ -97,8 +97,38 @@ Im Hintergrund wird Log4J zum Logging verwendet. Das kann sofern keine Fehler au
 
 ## Demo 1 - Syslog-Verarbeitung mit Apache Kafka und Flink
 
-[Syslog Producer for Apache Kafka](https://github.com/elodina/syslog-kafka)
-[Apache Kafka Docker](https://hub.docker.com/r/bitnami/kafka/)
+Im Sinne des Aufbaus eines kleinen SIEM (Security Information and Event Management) wird gezeigt, wie eine zentrale, stream-basierte Log-Verarbeitung realisiert werden kann. Nachgelagert können hierauf aufbauend Stream-Transformationen zur Aufbereitung der Logs implementiert werden.
+
+### Aufbau
+
+1. Docker Netzwerk bestehend aus:
+  - Kafka Zookeeper
+  - Kafka Broker (localhost:9092 tcp)
+  - Syslog Producer und Topic (localhost:5140 tcp)
+2. Apache Flink Streaming-Applikation (lokal in IntelliJ)
+3. Test-Client (z.B. Ubuntu for Windows mit WSL)
+
+Die Komponenten müssen in genau dieser Reihenfolge gestartet werden.
+Für das Docker-Netzwerk wurde eine docker-compose-Datei bereitgestellt. 
+
+Images:
+
+- [Syslog Producer for Apache Kafka](https://github.com/elodina/syslog-kafka)
+- [Apache Kafka Docker](https://hub.docker.com/r/bitnami/kafka/)
+
+```
+docker-compose up
+```
+
+### Anpassung Hosts-Datei
+
+Außerhalb des Docker-Netzwerks ist der FQDN *kafka-server* nicht bekannt. Als Workaround für die Testumgebung kann man der Host-Datei ``C:\windows\System32\drivers\etc`` einen DNS-Eintrag hinzufügen:
+
+```console
+127.0.0.1 kafka-server
+```
+
+(Hinweis: Notepad als Administrator ausführen)
 
 ### RSyslog-Konfiguration
 
@@ -121,6 +151,13 @@ sudo service rsyslog restart
 
 # Beim Start der nächsten Nutzer-Session ist das Logging von User-Befehlen aktiv
 ```
+
+### Mögliche Fehlerquellen
+
+- gelegentlich startet der Kafka-Broker zu schnell (bevor der Kafka-Zookeeper initialisiert wurde)
+  - Lösung: Netzwerk neustarten oder alle drei Container manuell in Reihenfolge per Kommandozeile starten
+- falls wieder InaccessibleObjectExceptions auftreten sollten, muss ein neuer JVM-Parameter hinzugefügt werden:
+  - ``--add-opens java.base/java.util=ALL-UNNAMED``
 
 ## Demo 2 - Event und Processing Time basiertes Windowing
 

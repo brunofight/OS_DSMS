@@ -65,7 +65,25 @@ Normalerweise werden Streaming Jobs von einem Flink-Client auf den Flink Jobmana
 ![Project_Setup4](https://user-images.githubusercontent.com/55789698/163538905-3237ff7e-e0f5-4520-b852-58162d378023.PNG)
 ![Project_Setup5](https://user-images.githubusercontent.com/55789698/163538909-03b7adcf-4ea6-4842-b547-1cab05f9f505.PNG)
 
+Für ein schnelles Test-Projekt reicht es lokal ein paar Daten als Stream bereitzustellen. Dazu wird die main-Methode im StreamingJob entsprechend angepasst:
 
+```
+public static void main(String[] args) throws Exception {
+		
+		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+		DataStream<Integer> stream = env.fromElements(1, 5, 8, 10, 4, 28, 9)
+				.filter(i -> i > 8);
+		stream.print();
+
+		env.execute("Test");
+	}
+```
+
+In der Ausgabe erscheinen nun alle Zahlen > 8.
+
+### Logging
+
+Im Hintergrund wird Log4J zum Logging verwendet. Das kann sofern keine Fehler auftreten bei der Demonstration etwas störend sein. Um das Logging auszuschalten, muss in der Datei ``./target/classes/log4j2.properties`` die Konfiguration ``rootLogger.level = OFF`` vorgenommen werden.
 
 ### Basic Project Setup
 

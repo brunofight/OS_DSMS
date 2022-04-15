@@ -42,8 +42,12 @@ Als Einstiegspunkt für die Entwicklung einer neuen Flink-Anwendung eignet sich 
 ```
 mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-java -DarchetypeVersion=1.12.0 -DgroupId=org.apache.flink -DartifactId=<Artifact> -Dversion=0.1 -Dpackage=<Package> -DinteractiveMode=false
 ```
+![Project_Setup1](https://user-images.githubusercontent.com/55789698/163538858-c0d3ad6b-ee16-4a4d-b60f-2f7430e86b70.PNG)
+![Project_Setup2](https://user-images.githubusercontent.com/55789698/163538887-0dd853d4-193b-4eb9-bdc2-35b2ed2536ea.PNG)
+![Project_Setup3](https://user-images.githubusercontent.com/55789698/163538902-645f34d7-9289-49ea-bfbe-3bfa360f092a.PNG)
+![Project_Setup4](https://user-images.githubusercontent.com/55789698/163538905-3237ff7e-e0f5-4520-b852-58162d378023.PNG)
+![Project_Setup5](https://user-images.githubusercontent.com/55789698/163538909-03b7adcf-4ea6-4842-b547-1cab05f9f505.PNG)
 
-![Images/Setup_Process1.PNG]
 
 ### Basic Project Setup
 

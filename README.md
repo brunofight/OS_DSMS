@@ -77,7 +77,7 @@ Normalerweise werden Streaming Jobs von einem Flink-Client auf den Flink Jobmana
 
 Für ein schnelles Test-Projekt reicht es lokal ein paar Daten als Stream bereitzustellen. Dazu wird die main-Methode im StreamingJob entsprechend angepasst:
 
-```
+```java
 public static void main(String[] args) throws Exception {
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -151,16 +151,16 @@ DataStream<Tuple3<Integer, Integer, String>> stream = env.addSource(new SiemSour
 ```
 
 > (1,*16*,**534, 332, 965, 1345, 1234, 876, 954, 1111,** )
- (1,*12*,**1876, 667, 3223, 3110, 3230, 78,** )
+> (1,*12*,**1876, 667, 3223, 3110, 3230, 78,** )
 
 
 ### Event Time Windows
 
 
 >  (1,*14*,**534, 332, 965, 876, 954, 1111, 667,**)
- (1,*6*,**1345, 1234, 1876,** )
- (1,*2*,**3110,** )
- (1,*4*,**3223, 3230,** )
+> (1,*6*,**1345, 1234, 1876,** )
+> (1,*2*,**3110,** )
+> (1,*4*,**3223, 3230,** )
 
 
 

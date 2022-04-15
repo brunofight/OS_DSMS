@@ -97,6 +97,8 @@ Im Hintergrund wird Log4J zum Logging verwendet. Das kann sofern keine Fehler au
 
 ## Demo 1 - Syslog-Verarbeitung mit Apache Kafka und Flink
 
+[Syslog Producer for Apache Kafka](https://github.com/elodina/syslog-kafka)
+[Apache Kafka Docker](https://hub.docker.com/r/bitnami/kafka/)
 
 ## Demo 2 - Event und Processing Time basiertes Windowing
 
@@ -189,17 +191,14 @@ Im Vergleich zu den *Processing Time Windows*:
 - die Events sind jetzt entsprechend ihrer Event-Zeit den Windows zugeordnet; die Summen entsprechen somit den korrekten Werten
 - das letzte Event (Event-Zeit: 78) fehlt; das liegt an der Heuristik der Watermarks 
 
-Durch Herumspielen mit dem *Duration.ofSeconds(int t)*-Parameter kann das letzte Event Wahlweise mit erfasst werden oder auch nicht.
+Durch Herumspielen mit dem *Duration.ofSeconds(int t)*-Parameter kann das letzte Event wahlweise mit erfasst werden oder auch nicht.
 ```java
-env..assignTimestampsAndWatermarks(WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(3)))
+env.assignTimestampsAndWatermarks(WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(3)))
 ```
 
 Bei niedrigen Werten z.B. 1 Sekunde fehlt das letzte Event, denn zuvor erscheinen Events mit einer Event-Zeit von über 3000 ms. Das heißt nach der Watermark-Heuristik wird nicht von einer größeren "Unordnung" als einer Sekunde ausgeganen. Zu dem Zeitpunkt (in Prozess-Zeit), wenn das Event auftritt, wurde das zugehörige erste Window wieder geschlossen; die 78 fällt weg.
-Hingegen bei einem höheren Wert von bspw. 5 Sekunden wird die 78 erfasst.
+Hingegen bei einem höheren Watermark-Wert von bspw. 5 Sekunden wird die 78 erfasst.
 
-### Bundle for Flink Cluster in Docker
-
-https://nightlies.apache.org/flink/flink-docs-master/docs/deployment/resource-providers/standalone/docker/#flink-with-docker-compose
 
 
 

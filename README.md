@@ -100,6 +100,28 @@ Im Hintergrund wird Log4J zum Logging verwendet. Das kann sofern keine Fehler au
 [Syslog Producer for Apache Kafka](https://github.com/elodina/syslog-kafka)
 [Apache Kafka Docker](https://hub.docker.com/r/bitnami/kafka/)
 
+### RSyslog-Konfiguration
+
+https://www.thegeekdiary.com/how-to-log-every-shell-command-in-linux/
+
+```console
+sudo echo '*.* @@localhost:5140' >> /etc/rsyslog.conf
+sudo service rsyslog restart
+```
+
+Um das Logging von allen Nutzer-Befehlen zu aktivieren:
+
+```console
+sudo vi /etc/bash.bashrc
+# folgende Zeile hinzufügen:
+ export PROMPT_COMMAND='RETRN_VAL=$?;logger -p local6.debug "$(whoami) [$$]: $(history 1 | sed "s/^[ ]*[0-9]\+[ ]*//" ) [$RETRN_VAL]"'
+
+sudo echo 'local6.* /var/log/secure' >> /etc/rsyslog.d/bash.conf
+sudo service rsyslog restart
+
+# Beim Start der nächsten Nutzer-Session ist das Logging von User-Befehlen aktiv
+```
+
 ## Demo 2 - Event und Processing Time basiertes Windowing
 
 Dieses Beispiel soll den Unterschied zwischen *Event Time* und *Processing Time* verdeutlichen. Besonders stark wird das bei der Verarbeitung von out-of-order Events mit hohem *Event Time Skew* deutlich. Dazu werden in einer lokalen Datenquelle Event-Zeiten ohne Reihenfolge simuliert (s. [SiemSource](https://github.com/brunofight/OS_DSMS/blob/main/src/main/java/demo/windowing/SiemSource.java)):

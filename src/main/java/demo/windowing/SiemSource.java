@@ -17,18 +17,14 @@ public class SiemSource extends RichSourceFunction<SiemEvent> {
     @Override
     public void run(SourceContext<SiemEvent> ctx) throws Exception {
 
-        Random rng = new Random();
         startTime = System.currentTimeMillis();
-
         Thread.sleep(3000);
 
         while (isRunning) {
 
             Tuple2<SiemEvent,Long> nextEvent = getNextEvent();
-
             ctx.collectWithTimestamp(nextEvent.f0, startTime + nextEvent.f1);
             Thread.sleep(100);
-
         }
 
         Thread.sleep(2000);

@@ -132,7 +132,7 @@ Außerhalb des Docker-Netzwerks ist der FQDN *kafka-server* nicht bekannt. Als W
 
 ### RSyslog-Konfiguration
 
-https://www.thegeekdiary.com/how-to-log-every-shell-command-in-linux/
+(s. https://www.thegeekdiary.com/how-to-log-every-shell-command-in-linux/)
 
 ```console
 sudo echo '*.* @@localhost:5140' >> /etc/rsyslog.conf

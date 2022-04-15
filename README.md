@@ -31,7 +31,7 @@ Die Anleitung basiert auf einem Windows-System (10/11). Für Linux-Derivate oder
 - JDK 18 (mindestens JDK 11) 
 - IntelliJ IDEA
   - [Kostenlose Studentenlizenz](https://www.jetbrains.com/de-de/community/education/#students)
-- Docker
+- Docker (nur für Demo 1)
   - [WSL-Aktivierung für Windows](https://docs.microsoft.com/de-de/windows/wsl/install)
 - Docker Desktop (nicht zwingend notwendig)
   - [Installationsanleitung](https://docs.docker.com/desktop/windows/install/)

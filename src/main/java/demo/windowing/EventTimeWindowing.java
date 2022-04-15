@@ -34,7 +34,7 @@ public class EventTimeWindowing {
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 		DataStream<Tuple3<Integer, Integer, String>> stream = env.addSource(new SiemSource())
-				.assignTimestampsAndWatermarks(WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(3)))
+				.assignTimestampsAndWatermarks(WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(1)))
 				.flatMap(new Splitter())
 				.keyBy(t -> t.f0)
 				.window(TumblingEventTimeWindows.of(Time.seconds(1)))

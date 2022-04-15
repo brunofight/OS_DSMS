@@ -3,8 +3,6 @@ package demo.windowing;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;
 
-import java.util.Random;
-
 public class SiemSource extends RichSourceFunction<SiemEvent> {
 
     boolean isRunning = true;

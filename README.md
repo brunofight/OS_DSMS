@@ -8,6 +8,16 @@ Begleitend zum 2. Vortrag im Oberseminar *Data Stream Management Systeme* (02.05
 - Beispiel einer *Stateful Stream Processing* Anwendung für die Verarbeitung von Syslogs (Demo 1)
 - Demonstration von Basiskonzepten des *Data Streamings* wie Windowing, Event/Processing Time, Watermarks und Aggregation
 
+## Nutzung
+
+```
+git clone https://github.com/brunofight/OS_DSMS.git
+```
+
+- [Entwicklungsumgebung](#apache-flink-entwicklungsumgebung) s. unten aufsetzen
+- *Run Configurations* analog zum [Test-Projekt](#test-projekt) anpassen
+
+
 ## Apache Flink Entwicklungsumgebung
 
 Die Anleitung basiert auf einem Windows-System (10/11). Für Linux-Derivate oder Mac können die Anforderungen leicht abweichen.
@@ -89,6 +99,10 @@ Im Hintergrund wird Log4J zum Logging verwendet. Das kann sofern keine Fehler au
 
 
 ## Demo 2 - Event und Processing Time basiertes Windowing
+
+Dieses Beispiel soll den Unterschied zwischen *Event Time* und *Processing Time* verdeutlichen. Besonders stark wird das bei der Verarbeitung von out-of-order Events mit hohem *Event Time Skew* deutlich. Dazu werden in einer lokalen Datenquelle Event-Times ohne Reihenfolge simuliert (s. ``SiemSource.java``):
+
+
 
 
 ### Bundle for Flink Cluster in Docker

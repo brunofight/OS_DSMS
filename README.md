@@ -100,7 +100,34 @@ Im Hintergrund wird Log4J zum Logging verwendet. Das kann sofern keine Fehler au
 
 ## Demo 2 - Event und Processing Time basiertes Windowing
 
-Dieses Beispiel soll den Unterschied zwischen *Event Time* und *Processing Time* verdeutlichen. Besonders stark wird das bei der Verarbeitung von out-of-order Events mit hohem *Event Time Skew* deutlich. Dazu werden in einer lokalen Datenquelle Event-Times ohne Reihenfolge simuliert (s. ``SiemSource.java``):
+Dieses Beispiel soll den Unterschied zwischen *Event Time* und *Processing Time* verdeutlichen. Besonders stark wird das bei der Verarbeitung von out-of-order Events mit hohem *Event Time Skew* deutlich. Dazu werden in einer lokalen Datenquelle Event-Zeiten ohne Reihenfolge simuliert (s. [SiemSource.java](https://github.com/brunofight/OS_DSMS/blob/main/src/main/java/demo/windowing/SiemSource.java)):
+
+```
+long[][] outOfOrderEventTimes = { {534, 2}, {332, 2}, {965, 2}, {1345, 2}, {1234, 2}, {876, 2}, {954, 2},
+            {1111, 2}, {1876, 2}, {667, 2}, {3223, 2}, {3110, 2}, {3230, 2}, {78, 2}};
+```
+
+Das zweidimensionale Array stellt eine Menge von Tupeln aus Event-Zeiten und einem Wert für eine spätere Summenberechnung (der Einfachheit halber überall 2).
+
+In der *run*-Methode wird die Übertragungsverzögerung der Events vorgetäuscht. Die Prozesszeit für das erste Event liegt bei 3 Sekunden. Alle folgenden Events haben konstant eine weitere Prozesszeit-Verzögerung von 100 Millisekunden. Mit ``ctx.collectWithTimeStamp(SiemEvent event, long eventTime)`` wird das zuvor erzeugte Event an den StreamJob weitergegeben. Dabei berechnet sich die Event-Zeit aus dem Startzeitpunkt der StreamSource plus der vorgegebenen Event-Zeit. So ergeben sich für die Elemente des Arrays folgende relative Event- und Prozesszeiten:
+
+> {534, 3000} ; {332, 3100} ; {965, 3200} ; {1345, 3300} usw.
+
+```
+public void run(SourceContext<SiemEvent> ctx) throws Exception {
+
+    startTime = System.currentTimeMillis();
+    Thread.sleep(3000);
+
+    while (isRunning) {
+        Tuple2<SiemEvent,Long> nextEvent = getNextEvent();
+        ctx.collectWithTimestamp(nextEvent.f0, startTime + nextEvent.f1);
+        Thread.sleep(100);
+    }
+
+    Thread.sleep(2000);
+}
+```
 
 
 

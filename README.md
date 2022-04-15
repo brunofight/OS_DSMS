@@ -8,6 +8,14 @@ Begleitend zum 2. Vortrag im Oberseminar *Data Stream Management Systeme* (02.05
 - Beispiel einer *Stateful Stream Processing* Anwendung für die Verarbeitung von Syslogs (Demo 1)
 - Demonstration von Basiskonzepten des *Data Streamings* wie Windowing, Event/Processing Time, Watermarks und Aggregation
 
+## Nutzung
+
+```
+git clone https://github.com/brunofight/OS_DSMS
+```
+
+
+
 ## Apache Flink Entwicklungsumgebung
 
 Die Anleitung basiert auf einem Windows-System (10/11). Für Linux-Derivate oder Mac können die Anforderungen leicht abweichen.

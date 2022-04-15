@@ -100,6 +100,10 @@ Im Hintergrund wird Log4J zum Logging verwendet. Das kann sofern keine Fehler au
 
 ## Demo 2 - Event und Processing Time basiertes Windowing
 
+Dieses Beispiel soll den Unterschied zwischen *Event Time* und *Processing Time* verdeutlichen. Besonders stark wird das bei der Verarbeitung von out-of-order Events mit hohem *Event Time Skew* deutlich. Dazu werden in einer lokalen Datenquelle Event-Times ohne Reihenfolge simuliert (s. ``SiemSource.java``):
+
+
+
 
 ### Bundle for Flink Cluster in Docker
 

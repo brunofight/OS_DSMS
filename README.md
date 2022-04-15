@@ -15,7 +15,7 @@ git clone https://github.com/brunofight/OS_DSMS.git
 ```
 
 - [Entwicklungsumgebung](#apache-flink-entwicklungsumgebung) s. unten aufsetzen
-- *Run Configurations* analog zu [](#test-projekt) anpassen
+- *Run Configurations* analog zum [Test-Projekt](#test-projekt) anpassen
 
 
 ## Apache Flink Entwicklungsumgebung

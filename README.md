@@ -11,9 +11,11 @@ Begleitend zum 2. Vortrag im Oberseminar *Data Stream Management Systeme* (02.05
 ## Nutzung
 
 ```
-git clone https://github.com/brunofight/OS_DSMS
+git clone https://github.com/brunofight/OS_DSMS.git
 ```
 
+- [Entwicklungsumgebung](#apache-flink-entwicklungsumgebung) s. unten aufsetzen
+- *Run Configurations* analog zu [](#test-projekt) anpassen
 
 
 ## Apache Flink Entwicklungsumgebung

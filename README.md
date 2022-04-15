@@ -147,20 +147,41 @@ DataStream<Tuple3<Integer, Integer, String>> stream = env.addSource(new SiemSour
                 .reduce((t1,t2) -> {t1.f1 += t2.f1; t1.f2 += t2.f2; return t1;})
                 ;
 
-        stream.print();
+stream.print();
 ```
 
 > 6> (1,*16*,**534, 332, 965, 1345, 1234, 876, 954, 1111,** )\
 > 6> (1,*12*,**1876, 667, 3223, 3110, 3230, 78,** )
 
+Die Ausgabe ist folgendermaßen zu interpretieren:
+- erster Wert ist nur ein Identifikator für ``keyBy`` und hat sonst keine Bedeutung
+- 
+
+Beim Ergebnis fällt auf, dass:
+- die Events in der Reihenfolge ihrer Verarbeitung zu Prozess-Zeit vorliegen
+- es nur 2 Fixed Windows erzeugt wurden, denn die Prozess-Zeiten bewegen sich nur in einem Intervall von [3000;3000 + 14 x 100] = [3000; 4400] Millisekunden
 
 ### Event Time Windows
 
+Die Klasse [EventTimeWindowing](https://github.com/brunofight/OS_DSMS/blob/main/src/main/java/demo/windowing/EventTimeWindowing.java) verarbeitet den Stream mit Event-Zeit basierten Windows. Hierfür werden zusätzlich Watermarks benötigt, da sonst Windows unendlich lange erhalten bleiben.
 
-> (1,*14*,**534, 332, 965, 876, 954, 1111, 667,**)\
-> (1,*6*,**1345, 1234, 1876,** )\
-> (1,*2*,**3110,** )\
-> (1,*4*,**3223, 3230,** )
+```java
+DataStream<Tuple3<Integer, Integer, String>> stream = env.addSource(new SiemSource())
+		.assignTimestampsAndWatermarks(WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(3)))
+		.flatMap(new Splitter())
+		.keyBy(t -> t.f0)
+		.window(TumblingEventTimeWindows.of(Time.seconds(1)))
+		.reduce((t1,t2) -> {t1.f1 += t2.f1; t1.f2 += t2.f2; return t1;})
+		;
+
+stream.print();
+
+```
+
+> 6> (1,*14*,**534, 332, 965, 876, 954, 1111, 667,**)\
+> 6> (1,*6*,**1345, 1234, 1876,** )\
+> 6> (1,*2*,**3110,** )\
+> 6> (1,*4*,**3223, 3230,** )
 
 
 

@@ -54,12 +54,26 @@ Die Erläuterung der Demo befindet sich im Abschnitt *Demo 2*.
 
 Die Bestimmung der Zustände fortlaufender Panes eines Windows erfolgt in einem von drei Accumulation Modes: *Discarding* , *Accumulating* oder *Accumulating and Retracting*.
 
+*Discarding* verwirft den Wert des vorherigen *Panes* und berechnet den neuen *Pane* aus den neu eingegangen Events.
+*Accumulating* berechnet den Zustand des aktuellen *Panes* durch Akkumulation mit dem vorherigen *Pane*.
+*Accumulating and Retracting* ist eine Kombination der Modi *Accumulating* und *Discarding*. Pro Pane werden zwei Zustände erzeugt: Akkumulierter Zustand und Delta zum vorherigen *Pane*.
 
+## 8. Zusammenfassung/Kernaussagen
 
+Mit dem Einsatz von Stateful Stream Processing ist richtige Echtzeitfähigkeit bei der Verarbeitung von Unbounded Data-Sets erreichbar.
+Use Case sind u.a. Log-Analyse und SIEM.
 
+Zeitabhängige Streams werden zur weiteren Transformation in Zeitabschnitte (Windows) aufgeteilt. Man unterscheidet dabei zwischen *Fixed (bzw. Tumbling) Windows*, *Sliding Windows* und *Session Windows*. 
 
-## 8. Zusammenfassung
+Windows können in Processing Time oder Event Time erstellt werden.
+*Processing Time* hat Probleme mit *Event Time Skew* und *out-of-order processing*.
+*Event Time* erlaubt keine garantierte Feststellung der Vollständigkeit.
 
+Trigger bieten die Möglichkeit Aktualisierungen von Windows (Panes) über deren Entstehungszeit auszugeben. Man unterscheidet zwischen *Repeated Update Trigger* (*Per-Record, Aligned Delay, Unaligned Delay*) und *Completeness Trigger*.
+
+*Watermarks* liefern entweder eine konkrete Aussage (*Perfect Watermark*) oder eine Abschätzung (*Heuristic Watermark*) über die Vollständigkeit der eingegangenen Events. 
+
+Die Bestimmung der Zustände fortlaufender Panes eines Windows erfolgt in einem von drei Accumulation Modes: *Discarding* , *Accumulating* oder *Accumulating and Retracting*.
 
 
 ## Quellen

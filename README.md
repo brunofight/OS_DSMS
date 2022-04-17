@@ -1,5 +1,9 @@
 # Oberseminar - Grundbegriffe des Data Stream Management
 
+# Vortragsthesen:
+
+# Demos 
+
 Begleitend zum 2. Vortrag im Oberseminar *Data Stream Management Systeme* (02.05.2022) werden zwei Demonstrationen mit *Apache Flink* präsentiert. Es folgt eine Anleitung zur Replikation und Nachvollziehen dieses grundlegenden Projektes. Dabei liegt der Fokus insbesondere auf:
 
 - Einrichtung einer lokalen Entwicklungsumgebung für *Apache Flink*

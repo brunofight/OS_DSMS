@@ -22,22 +22,45 @@ Die Log-Analyse bedarf einer Informationsbereitstellung in Echtzeit. Nur so kön
 Das SIEM (Security Information and Event Management) ist ein wichtiges Teilgebiet der Log-Analyse in der IT-Sicherheit. Aus Log-Events werden Informationen zur Erkennung von Cyberangriffsmustern gewonnen und in Use-Cases festgehalten. Typische Use-Case-Definitionen basieren auf Schwellwerten für bspw. fehlgeschlagene Anmeldungen, Web-Requests (DDoS-Angriff), ausgehender DNS-Traffic (Data Exfiltration).
 Bekannte kommerzielle SIEM-Systeme sind Splunk, ArcSight und QRadar.
 
+Die Erläuterung der Demo befindet sich im Abschnitt *Demo 1*.
+
 ## 3. Windowing
 
 Zeitabhängige Streams werden zur weiteren Transformation in Zeitabschnitte (Windows) aufgeteilt. Man unterscheidet dabei zwischen *Fixed (bzw. Tumbling) Windows*, *Sliding Windows* und *Session Windows*. Zudem ist beim *Windowing* eine Wahl zu treffen, ob entlang der *Processing Time* oder *Event Time* *Windows* definiert werden sollen. 
 
 *Processing Time Windows* lassen sich einfach implementieren, sind garantiert vollständig und für die Verarbeitung von zeit-agnostischen Daten (z.B. Filtern von bestimmten Web-Requests) durchaus sinnvoll. Es gibt dabei aber keinen Weg ungeordnete (*out-of-order*) Events und/oder hohen *Event Time Skew* zu kompensieren. Diese Defizite lassen sich mit *Event Time Windows* überwinden (allerdings möglicherweise zu Kosten der Vollständigkeit).
 
-
 ## 4. Trigger
+
+*Trigger* definieren Zeitpunkte, zu denen aktualisierte Versionen eines Windows (*Panes*) ausgegeben werden. 
+
+*Repeated Update Trigger* geben periodisch beim Eingang neuer Events (*Per-Record*) oder basierend auf der Prozess-Zeit (*Aligned Delay, Unaligned Delay*) neue Panes aus. *Unaligned Delay Repeated Update Trigger* sorgen für eine gleichmäßigere Lastverteilung als mit *Aligned Delay*.
+
+*Completeness Trigger* werden bei einer bestimmten Vollständigkeit eines Windows ausgelöst. Voraussetzung für eine Abschätzung, ob ein Window (in *Event Time*) vollständig ist, sind *Watermarks*.
 
 ## 5. Watermarks
 
+Der Grundgedanke von *Watermarks* ist die (heuristische) Bestimmung einer Event-Zeit E, bis zu welcher alle Events erhalten wurden.
+
+*Watermarks* liefern entweder eine konkrete Aussage (*Perfect Watermark*) oder eine Abschätzung (*Heuristic Watermark*) über die Vollständigkeit der eingegangenen Events. 
+
+*Perfect Watermarks* setzen vollständiges Wissen über die Gesamtheit der Eingangsdaten voraus und sind somit oftmals nicht umsetzbar.
+
 ## 6. Demo - Windowing in Event and Processing Time
+
+Die Erläuterung der Demo befindet sich im Abschnitt *Demo 2*.
 
 ## 7. Accumulation Modes
 
+Die Bestimmung der Zustände fortlaufender Panes eines Windows erfolgt in einem von drei Accumulation Modes: *Discarding* , *Accumulating* oder *Accumulating and Retracting*.
+
+
+
+
+
 ## 8. Zusammenfassung
+
+
 
 ## Quellen
 
